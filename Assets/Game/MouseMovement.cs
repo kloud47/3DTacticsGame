@@ -4,7 +4,6 @@ using UnityEngine;
 public class MouseMovement : MonoBehaviour
 {
     private static MouseMovement instance; // Making a permanent instance in the world:
-    
     [SerializeField] private LayerMask tilePlaneLayerMask;
 
     private void Awake()
