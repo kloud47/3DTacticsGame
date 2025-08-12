@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+// This class handles all the logic for Unit selection and providing a base for all its other properties:
 public class UnitControlSystem : MonoBehaviour
 {
     public static UnitControlSystem Instance { get; private set; }
