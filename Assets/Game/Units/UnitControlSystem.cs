@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class UnitConstrolSystem : MonoBehaviour
+public class UnitControlSystem : MonoBehaviour
 {
-    public static UnitConstrolSystem Instance { get; private set; }
+    public static UnitControlSystem Instance { get; private set; }
     public event EventHandler OnSelectedUnitChanged;
     
     [SerializeField] private Unit selectedUnit;
