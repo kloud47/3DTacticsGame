@@ -1,10 +1,17 @@
+using System.Collections.Generic;
+using Game.Grids;
 using UnityEngine;
 
+/// <summary>
+/// This class uses gridsystem and Unit information to perform visual changes and show the grids:
+/// </summary>
 public class LevelGrid : MonoBehaviour
 {
     public static LevelGrid Instance { get; private set; }
     
     [SerializeField] private Transform gridDebugObjPrefab;
+    [SerializeField] private int gridSize = 10;
+    [SerializeField] private int cellSize = 10;
     private GridSystem gridSystem;
     private void Awake()
     {
@@ -16,26 +23,32 @@ public class LevelGrid : MonoBehaviour
         }
         Instance = this;
         // Initializing the Grid System:
-        gridSystem = new GridSystem(10, 10, 2f);
+        gridSystem = new GridSystem(gridSize, gridSize, cellSize);
         gridSystem.CreateDebugObjects(gridDebugObjPrefab);
     }
 
-    public void SetUnitAtGridPosition(GridPosition gridPosition, Unit unit)
+    public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-        gridObject.SetUnit(unit);
+        gridObject.AddUnitList(unit);
     }
 
-    public Unit GetUnitAtGridPosition(GridPosition gridPosition)
+    public List<Unit> GetUnitAtGridPosition(GridPosition gridPosition)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-        return gridObject.GetUnit();
+        return gridObject.GetUnitList();
     }
 
-    public void ClearUnitAtGridPosition(GridPosition gridPosition)
+    public void RemoveUnitAtGridPosition(GridPosition gridPosition, Unit unit)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
-        gridObject.SetUnit(null);
+        gridObject.RemoveUnitList(unit);
+    }
+
+    public void UnitMovedGridPosition(Unit unit, GridPosition formGridPosition, GridPosition toGridPosition)
+    {
+        RemoveUnitAtGridPosition(formGridPosition, unit);
+        AddUnitAtGridPosition(toGridPosition, unit);
     }
     
     public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);
