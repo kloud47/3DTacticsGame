@@ -43,5 +43,10 @@ namespace Game.Grids
         {
             return HashCode.Combine(x, z);
         }
+
+        public static GridPosition operator +(GridPosition a, GridPosition b)
+        {
+            return new GridPosition(a.x + b.x, a.z + b.z);
+        }
     }
 }

@@ -26,7 +26,7 @@ public class UnitControlSystem : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             if (TryHandleUnitSelection()) return;
-            selectedUnit?.Move(MouseMovement.GetPosition()); // Elvis operator(for null checks):
+            selectedUnit?.GetMoveAction().Move(MouseMovement.GetPosition()); // Elvis operator(for null checks):
         }
     }
 
