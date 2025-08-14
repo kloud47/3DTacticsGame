@@ -82,6 +82,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  maxMoveDistance: 2
   unitAnimator: {fileID: 8344479604426217127}
 --- !u!1 &6160399273402113751
 GameObject:
