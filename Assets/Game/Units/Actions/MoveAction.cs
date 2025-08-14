@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Game.Units.Actions
 {
-    public class MoveAction : MonoBehaviour
+    public class MoveAction : BaseAction
     {
         private Vector3 targetPosition;
-        private Unit unit;
+        
         [SerializeField] float moveSpeed = 5f;
         [SerializeField] private int maxMoveDistance = 4; // this is the amount of distance a Unit can move:
-    
         [SerializeField] private Animator unitAnimator;
+        
     
         private void Awake()
         {
@@ -21,23 +21,27 @@ namespace Game.Units.Actions
 
         void Update()
         {
+            if (!isActive) return;
+            
+            Vector3 moveDirection = (targetPosition - transform.position).normalized;
             float stoppingDistance = 0.1f;
             if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
             {
-                Vector3 moveDirection = (targetPosition - transform.position).normalized;
                 transform.position += moveDirection * (Time.deltaTime * moveSpeed);
-                float rotationSpeed = 15f;
-                transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotationSpeed);
                 unitAnimator.SetBool("IsWalking", true);
             }
             else
             {
                 unitAnimator.SetBool("IsWalking", false);
+                this.isActive = false;
             }
+            float rotationSpeed = 15f;
+            transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotationSpeed);
         }
     
         public void Move(GridPosition gridPosition)
         {
+            this.isActive = true;
             this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         }
 

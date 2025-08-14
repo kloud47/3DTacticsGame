@@ -34,6 +34,11 @@ public class UnitControlSystem : MonoBehaviour
                 selectedUnit?.GetMoveAction().Move(mouseSelectedGridPosition); // Elvis operator(for null checks):   
             }
         }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            selectedUnit.GetSpinAction().Spin();
+        }
     }
 
     private bool TryHandleUnitSelection()
