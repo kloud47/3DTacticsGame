@@ -35,11 +35,17 @@ public class MoveAction : MonoBehaviour
         }
     }
     
-    public void Move(Vector3 targetPosition)
+    public void Move(GridPosition gridPosition)
     {
-        this.targetPosition = targetPosition;
+        this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
     }
 
+    public bool IsValidActionGridPosition(GridPosition gridPosition)
+    {
+        List<GridPosition> validGridPositions = GetValidActionGridPositionList();
+        return validGridPositions.Contains(gridPosition);
+    }
+    
     public List<GridPosition> GetValidActionGridPositionList()
     {
         List<GridPosition> validGridPositions = new List<GridPosition>();
@@ -68,6 +74,7 @@ public class MoveAction : MonoBehaviour
                     // Grid position already occupied with another unit:
                     continue;
                 }
+                validGridPositions.Add(testGridPosition);
             }
         }
         

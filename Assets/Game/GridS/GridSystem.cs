@@ -28,9 +28,9 @@ namespace Game.Grids
             }
         }
 
-        public Vector3 GetWorldPosition(int x, int z)
+        public Vector3 GetWorldPosition(GridPosition gridPosition)
         {
-            return new Vector3(x, 0, z) * cellSize;
+            return new Vector3(gridPosition.x, 0, gridPosition.z) * cellSize;
         }
 
         public GridPosition GetGridPosition(Vector3 position)
@@ -48,8 +48,8 @@ namespace Game.Grids
                 for (int z = 0; z < height; z++)
                 {
                     GridPosition gridPosition = new GridPosition(x, z);
-                    Transform debugTransform = GameObject.Instantiate(DebugPrefab, GetWorldPosition(x, z), Quaternion.identity);
-                    debugTransform.rotation = Quaternion.Euler(0, 180, 0);
+                    Transform debugTransform = GameObject.Instantiate(DebugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
+                    // debugTransform.rotation = Quaternion.Euler(0, 180, 0);
                     GridDebugObject gridDebugObject = debugTransform.GetComponent<GridDebugObject>();
                     gridDebugObject.SetGridObject(GetGridObject(gridPosition));
                 }
@@ -64,6 +64,16 @@ namespace Game.Grids
         public bool IsValidGridPosition(GridPosition gridPosition)
         {
             return gridPosition.x >= 0 && gridPosition.x < width && gridPosition.z >= 0 && gridPosition.z < height;
+        }
+
+        public int GetWidth()
+        {
+            return width;
+        }
+
+        public int GetHeight()
+        {
+            return height;
         }
     }
 }

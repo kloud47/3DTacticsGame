@@ -1,4 +1,5 @@
 using System;
+using Game.Grids;
 using UnityEngine;
 
 // This class handles all the logic for Unit selection and providing a base for all its other properties:
@@ -25,8 +26,13 @@ public class UnitControlSystem : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
+            // check for tile or unit selection:
             if (TryHandleUnitSelection()) return;
-            selectedUnit?.GetMoveAction().Move(MouseMovement.GetPosition()); // Elvis operator(for null checks):
+            GridPosition mouseSelectedGridPosition = LevelGrid.Instance.GetGridPosition(MouseMovement.GetPosition());
+            if (selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseSelectedGridPosition))
+            {
+                selectedUnit?.GetMoveAction().Move(mouseSelectedGridPosition); // Elvis operator(for null checks):   
+            }
         }
     }
 
