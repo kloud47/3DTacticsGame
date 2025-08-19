@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Game.Grids;
 using UnityEngine;
@@ -12,10 +13,9 @@ namespace Game.Units.Actions
         [SerializeField] private int maxMoveDistance = 4; // this is the amount of distance a Unit can move:
         [SerializeField] private Animator unitAnimator;
         
-    
-        private void Awake()
+        protected override void Awake()
         {
-            unit = GetComponent<Unit>();
+            base.Awake();
             targetPosition = transform.position;
         }
 
@@ -32,6 +32,7 @@ namespace Game.Units.Actions
             }
             else
             {
+                onActionComplete?.Invoke();
                 unitAnimator.SetBool("IsWalking", false);
                 this.isActive = false;
             }
@@ -39,19 +40,14 @@ namespace Game.Units.Actions
             transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotationSpeed);
         }
     
-        public void Move(GridPosition gridPosition)
+        public override void TakeAction(GridPosition gridPosition, Action onComplete)
         {
-            this.isActive = true;
-            this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
-        }
-
-        public bool IsValidActionGridPosition(GridPosition gridPosition)
-        {
-            List<GridPosition> validGridPositions = GetValidActionGridPositionList();
-            return validGridPositions.Contains(gridPosition);
+            onActionComplete = onComplete;
+            isActive = true;
+            targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         }
     
-        public List<GridPosition> GetValidActionGridPositionList()
+        public override List<GridPosition> GetValidActionGridPositionList()
         {
             List<GridPosition> validGridPositions = new List<GridPosition>();
             GridPosition unitGridPosition = unit.GetGridPosition();
@@ -85,5 +81,7 @@ namespace Game.Units.Actions
         
             return validGridPositions;
         }
+
+        public override string GetActionName() => "Move";
     }
 }
