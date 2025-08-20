@@ -32,7 +32,7 @@ namespace Game.Units.Actions
             }
             else
             {
-                onActionComplete?.Invoke();
+                onActionComplete?.Invoke(); // Invoke the function to clear the Busy action:
                 unitAnimator.SetBool("IsWalking", false);
                 this.isActive = false;
             }

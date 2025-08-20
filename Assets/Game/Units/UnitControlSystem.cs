@@ -10,6 +10,7 @@ public class UnitControlSystem : MonoBehaviour
     public event EventHandler OnSelectedUnitChanged;
     public event EventHandler OnSelectedActionChanged;
     public event EventHandler<bool> OnBusyChanged;
+    public event EventHandler OnActionStarted;
     
     [SerializeField] private Unit selectedUnit;
     [SerializeField] private LayerMask unitLayerMask;
@@ -57,20 +58,26 @@ public class UnitControlSystem : MonoBehaviour
 
             if (selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {
-                selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+                if (selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
+                {
+                    SetBusy();
+                    selectedAction.TakeAction(mouseGridPosition, ClearBusy);   
+                    
+                    OnActionStarted?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
     }
 
     private void SetBusy()
     {
-        this.isBusy = true;
+        isBusy = true;
         OnBusyChanged?.Invoke(this, isBusy);
     }
 
     private void ClearBusy()
     {
-        this.isBusy = false;
+        isBusy = false;
         OnBusyChanged?.Invoke(this, isBusy);
     }
 

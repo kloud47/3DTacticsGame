@@ -5,7 +5,9 @@ using UnityEngine;
 public class UnitActionSystemUI : MonoBehaviour
 {
     [SerializeField] private Transform actionButtonPrefab;
+    [SerializeField] private Transform actionPointsPrefab;
     [SerializeField] private Transform actionButtonContainerTransform;
+    [SerializeField] private Transform actionPointsContainerTransform;
 
     private List<ActionButtonUI> actionButtonUIList;
 
@@ -18,6 +20,8 @@ public class UnitActionSystemUI : MonoBehaviour
         // when changing Units available action buttons should also change
         UnitControlSystem.Instance.OnSelectedUnitChanged += UnitControlSystem_OnSelectedUnitChanged;
         UnitControlSystem.Instance.OnSelectedActionChanged += UnitControlSystem_OnSelectedActionChanged;
+        UnitControlSystem.Instance.OnActionStarted += UnitControlSystem_OnActionStarted;
+        UpdateActionPoints();
         CreateUnitActionButton();
         UpdateSelectedVisual();
     }
@@ -39,7 +43,7 @@ public class UnitActionSystemUI : MonoBehaviour
             ActionButtonUI actionButtonUI = actionButtonUITransform.GetComponent<ActionButtonUI>();
             actionButtonUI.SetBaseAction(baseAction);
             
-            actionButtonUIList.Add(actionButtonUI);
+            actionButtonUIList.Add(actionButtonUI); // to change the UI:
         }
     }
 
@@ -47,11 +51,17 @@ public class UnitActionSystemUI : MonoBehaviour
     {
         CreateUnitActionButton();
         UpdateSelectedVisual();
+        UpdateActionPoints();
     }
 
     private void UnitControlSystem_OnSelectedActionChanged(object sender, EventArgs e)
     {
         UpdateSelectedVisual();
+    }
+
+    private void UnitControlSystem_OnActionStarted(object sender, EventArgs e)
+    {
+        UpdateActionPoints();
     }
     
     private void UpdateSelectedVisual()
@@ -59,6 +69,18 @@ public class UnitActionSystemUI : MonoBehaviour
         foreach (ActionButtonUI actionButtonUI in actionButtonUIList)
         {
             actionButtonUI.UpdateSelectedVisual();
+        }
+    }
+
+    private void UpdateActionPoints()
+    {
+        Unit selectedUnit = UnitControlSystem.Instance.GetSelectedUnit();
+        int actionpoints = selectedUnit.GetActionPoints();
+
+        Debug.Log("Action Points -> " + actionpoints);
+        for (int i = 0; i < actionpoints; i++)
+        {
+            Instantiate(actionPointsPrefab, actionPointsContainerTransform);
         }
     }
 }

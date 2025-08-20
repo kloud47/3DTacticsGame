@@ -39,5 +39,10 @@ namespace Game.Units.Actions
             
             return new List<GridPosition> { unitGridPostion };
         }
+        
+        public override int GetActionPointsCost()
+        {
+            return 2;
+        }
     }
 }
