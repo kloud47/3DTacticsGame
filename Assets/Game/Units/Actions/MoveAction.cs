@@ -32,9 +32,10 @@ namespace Game.Units.Actions
             }
             else
             {
-                onActionComplete?.Invoke(); // Invoke the function to clear the Busy action:
+                ActionComplete();
+                // onActionComplete?.Invoke(); // Invoke the function to clear the Busy action:
                 unitAnimator.SetBool("IsWalking", false);
-                this.isActive = false;
+                // this.isActive = false;
             }
             float rotationSpeed = 15f;
             transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotationSpeed);
@@ -42,8 +43,7 @@ namespace Game.Units.Actions
     
         public override void TakeAction(GridPosition gridPosition, Action onComplete)
         {
-            onActionComplete = onComplete;
-            isActive = true;
+            ActionStart(onComplete);
             targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         }
     

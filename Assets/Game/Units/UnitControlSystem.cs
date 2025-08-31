@@ -38,6 +38,11 @@ public class UnitControlSystem : MonoBehaviour
     {
         if (isBusy) return; // If you are busy return:
 
+        if (!TurnSystem.Instance.IsPlayerTurn())
+        {
+            return;
+        }
+        
         // So that it only selects the UI not the game object underneath:
         if (EventSystem.current.IsPointerOverGameObject()) 
         {
@@ -92,7 +97,13 @@ public class UnitControlSystem : MonoBehaviour
                 {
                     if (unit == selectedUnit)
                     {
-                        // Unit is already selected
+                        // Unit is already selected:
+                        return false;
+                    }
+
+                    if (unit.IsEnemy())
+                    {
+                        // Clicked on an Enemy:
                         return false;
                     }
                     SetSelectedUnit(unit);

@@ -19,15 +19,13 @@ namespace Game.Units.Actions
             totalSpinAmt += spinAddAmount;
             if (totalSpinAmt >= 360f)
             {
-                isActive = false;
-                onActionComplete?.Invoke();
+                ActionComplete();
             }
         }
 
         public override void TakeAction(GridPosition gridPosition,Action onComplete)
         {
-            onActionComplete = onComplete;
-            isActive = true;
+            ActionStart(onComplete);
             totalSpinAmt = 0f;
         }
     

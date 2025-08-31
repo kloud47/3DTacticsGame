@@ -5,12 +5,18 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+   private const int ACTION_POINTS_MAX = 2;
+   
+   public static event EventHandler OnAnyActionPointsChanged; 
+   
+   [SerializeField] private bool isEnemy;   
+
    private GridPosition gridPosition;
    private MoveAction moveAction;
    private SpinAction spinAction;
    private BaseAction[] baseActionsArray;
-   private int actionPoints = 2;
-
+   private int actionPoints = ACTION_POINTS_MAX;
+   
    private void Awake()
    {
       moveAction = GetComponent<MoveAction>();
@@ -22,12 +28,11 @@ public class Unit : MonoBehaviour
    {
       gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
       LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
+      TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
    }
 
    private void Update()
    {
-      
-      
       GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
       if (newGridPosition != gridPosition)
       {
@@ -45,6 +50,11 @@ public class Unit : MonoBehaviour
    public SpinAction GetSpinAction()
    {
       return spinAction;
+   }
+
+   public Vector3 GetWorldPosition()
+   {
+      return transform.position;
    }
 
    public GridPosition GetGridPosition()
@@ -78,10 +88,33 @@ public class Unit : MonoBehaviour
    private void SpendActionPoints(int amount)
    {
       actionPoints -= amount;
+      
+      OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
    }
 
    public int GetActionPoints()
    {
-      return actionPoints;
+      return actionPoints;  
+   }
+
+   private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
+   {
+      if ((IsEnemy() && !TurnSystem.Instance.IsPlayerTurn()) ||
+          (!IsEnemy() && TurnSystem.Instance.IsPlayerTurn()))
+      {
+         actionPoints = ACTION_POINTS_MAX;
+         
+         OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);  
+      }
+   }
+
+   public bool IsEnemy()
+   {
+      return isEnemy;
+   }
+
+   public void Damage()
+   {
+      Debug.Log(transform + " damage!");
    }
 }

@@ -11,6 +11,7 @@ public abstract class BaseAction : MonoBehaviour
 
     protected virtual void Awake()
     {
+        // Setting owning unit in all actions:
         unit = GetComponent<Unit>();
     }
 
@@ -28,5 +29,17 @@ public abstract class BaseAction : MonoBehaviour
     public virtual int GetActionPointsCost()
     {
         return 1;
+    }
+
+    protected void ActionStart(Action onActionComplete)
+    {
+        isActive = true;
+        this.onActionComplete = onActionComplete;
+    }
+
+    protected void ActionComplete()
+    {
+        isActive = false;
+        onActionComplete?.Invoke();
     }
 }
