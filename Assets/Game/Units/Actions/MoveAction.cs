@@ -7,11 +7,14 @@ namespace Game.Units.Actions
 {
     public class MoveAction : BaseAction
     {
+        public event EventHandler OnStartMoving;
+        public event EventHandler OnStopMoving;
+        
         private Vector3 targetPosition;
         
         [SerializeField] float moveSpeed = 5f;
         [SerializeField] private int maxMoveDistance = 4; // this is the amount of distance a Unit can move:
-        [SerializeField] private Animator unitAnimator;
+        // [SerializeField] private Animator unitAnimator;
         
         protected override void Awake()
         {
@@ -28,14 +31,11 @@ namespace Game.Units.Actions
             if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
             {
                 transform.position += moveDirection * (Time.deltaTime * moveSpeed);
-                unitAnimator.SetBool("IsWalking", true);
             }
             else
             {
+                OnStopMoving?.Invoke(this, EventArgs.Empty);
                 ActionComplete();
-                // onActionComplete?.Invoke(); // Invoke the function to clear the Busy action:
-                unitAnimator.SetBool("IsWalking", false);
-                // this.isActive = false;
             }
             float rotationSpeed = 15f;
             transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotationSpeed);
@@ -45,6 +45,8 @@ namespace Game.Units.Actions
         {
             ActionStart(onComplete);
             targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+            
+            OnStartMoving?.Invoke(this, EventArgs.Empty);
         }
     
         public override List<GridPosition> GetValidActionGridPositionList()

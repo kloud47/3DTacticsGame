@@ -8,6 +8,14 @@ using UnityEngine.EventSystems;
 
 public class ShootAction : BaseAction
 {
+    public event EventHandler<OnShootEventArgs> OnShoot;
+
+    public class OnShootEventArgs : EventArgs
+    {
+        public Unit targetUnit;
+        public Unit shootingUnit;
+    }
+    
     private enum State
     {
         Aiming,
@@ -70,7 +78,6 @@ public class ShootAction : BaseAction
                 break;
             case State.Cooloff:
                 ActionComplete();
-                // ActionComplete();
                 break;
         }
         Debug.Log(state);
@@ -78,6 +85,11 @@ public class ShootAction : BaseAction
 
     private void Shoot()
     {
+        OnShoot?.Invoke(this, new OnShootEventArgs
+        {
+            targetUnit = TargetUnit,
+            shootingUnit = unit
+        }); // Invoking shoot animation:
         TargetUnit.Damage();
     }
 
