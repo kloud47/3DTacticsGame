@@ -90,7 +90,7 @@ public class ShootAction : BaseAction
             targetUnit = TargetUnit,
             shootingUnit = unit
         }); // Invoking shoot animation:
-        TargetUnit.Damage();
+        TargetUnit.Damage(40);
     }
 
     public override string GetActionName()
@@ -159,5 +159,10 @@ public class ShootAction : BaseAction
         }
     
         return validGridPositions;
+    }
+
+    public override int GetActionPointsCost()   
+    {
+        return 0;
     }
 }
