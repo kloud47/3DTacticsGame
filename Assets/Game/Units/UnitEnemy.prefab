@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: unit
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1353784512135893621, guid: e424942ddc2f9c346b85fc912f77c5a9, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: -1002704104173724610}
     - target: {fileID: 1713440840008696916, guid: e424942ddc2f9c346b85fc912f77c5a9, type: 3}
       propertyPath: m_Name
       value: UnitEnemy
