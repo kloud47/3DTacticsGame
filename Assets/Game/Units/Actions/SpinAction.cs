@@ -25,8 +25,8 @@ namespace Game.Units.Actions
 
         public override void TakeAction(GridPosition gridPosition,Action onComplete)
         {
-            ActionStart(onComplete);
             totalSpinAmt = 0f;
+            ActionStart(onComplete);
         }
     
         public override string GetActionName() => "Spin";
@@ -41,6 +41,15 @@ namespace Game.Units.Actions
         public override int GetActionPointsCost()
         {
             return 2;
+        }
+
+        public override EnemyAIActions GetEnemyAIAction(GridPosition gridPosition)
+        {
+            return new EnemyAIActions
+            {
+                gridPosition = gridPosition,
+                actionValue = 0,
+            };
         }
     }
 }

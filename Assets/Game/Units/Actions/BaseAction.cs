@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Game.Grids;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class BaseAction : MonoBehaviour
 {
+    public static event EventHandler OnAnyActionStarted;
+    public static event EventHandler OnAnyActionCompleted;
+    
     protected Unit unit;
     protected bool isActive;
     protected Action onActionComplete;
@@ -35,11 +39,32 @@ public abstract class BaseAction : MonoBehaviour
     {
         isActive = true;
         this.onActionComplete = onActionComplete;
+        OnAnyActionStarted?.Invoke(this, EventArgs.Empty);
     }
 
     protected void ActionComplete()
     {
         isActive = false;
         onActionComplete?.Invoke();
+        OnAnyActionCompleted?.Invoke(this, EventArgs.Empty);
     }
+
+    public Unit GetUnit()
+    {
+        return unit;
+    }
+
+    public EnemyAIActions GetBestEnemyAIAction()
+    {
+        List<EnemyAIActions> enemyAIActionList = new List<EnemyAIActions>();
+        List<GridPosition> validActionGridPositions = GetValidActionGridPositionList();
+
+        foreach (GridPosition gridPosition in validActionGridPositions)
+        {
+            EnemyAIActions enemyAIAction = GetEnemyAIAction(gridPosition);
+            enemyAIActionList.Add(enemyAIAction);
+        }
+    }
+
+    public abstract EnemyAIActions GetEnemyAIAction(GridPosition gridPosition);
 }

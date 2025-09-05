@@ -43,10 +43,10 @@ namespace Game.Units.Actions
     
         public override void TakeAction(GridPosition gridPosition, Action onComplete)
         {
-            ActionStart(onComplete);
             targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
-            
             OnStartMoving?.Invoke(this, EventArgs.Empty);
+            
+            ActionStart(onComplete);
         }
     
         public override List<GridPosition> GetValidActionGridPositionList()
@@ -85,5 +85,14 @@ namespace Game.Units.Actions
         }
 
         public override string GetActionName() => "Move";
+        
+        public override EnemyAIActions GetEnemyAIAction(GridPosition gridPosition)
+        {
+            return new EnemyAIActions
+            {
+                gridPosition = gridPosition,
+                actionValue = 0,
+            };
+        }
     }
 }

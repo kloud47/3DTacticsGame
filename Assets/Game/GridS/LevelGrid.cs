@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Game.Grids;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// This class uses gridsystem and Unit information to perform visual changes and show the grids:
@@ -8,6 +10,8 @@ using UnityEngine;
 public class LevelGrid : MonoBehaviour
 {
     public static LevelGrid Instance { get; private set; }
+
+    public event EventHandler OnAnyUnitMovedGridPosition;
     
     [SerializeField] private Transform gridDebugObjPrefab;
     [SerializeField] private int gridSize = 10;
@@ -49,6 +53,7 @@ public class LevelGrid : MonoBehaviour
     {
         RemoveUnitAtGridPosition(formGridPosition, unit);
         AddUnitAtGridPosition(toGridPosition, unit);
+        OnAnyUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
     }
     
     public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);

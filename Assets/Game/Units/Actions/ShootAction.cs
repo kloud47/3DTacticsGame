@@ -100,7 +100,6 @@ public class ShootAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onComplete)
     {
-        ActionStart(onComplete);
         TargetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
         
         Debug.Log("Aiming");
@@ -109,6 +108,8 @@ public class ShootAction : BaseAction
         stateTimer = aimingStateTime;
 
         CanShootBullet = true;
+        
+        ActionStart(onComplete);
     }
 
     public override List<GridPosition> GetValidActionGridPositionList()
@@ -164,5 +165,29 @@ public class ShootAction : BaseAction
     public override int GetActionPointsCost()   
     {
         return 0;
+    }
+
+    public Unit GetTargetUnit()
+    {
+        return TargetUnit;
+    }
+
+    public int GetMaxShootDistance()
+    {
+        return maxShootDistance;
+    }
+    
+    public override EnemyAIActions GetEnemyAIAction(GridPosition gridPosition)
+    {
+        return new EnemyAIActions
+        {
+            gridPosition = gridPosition,
+            actionValue = 100,
+        };
+    }
+
+    public int GetTargetCountAtPosition(GridPosition gridPosition)
+    {
+        
     }
 }
