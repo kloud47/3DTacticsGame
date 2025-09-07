@@ -1,5 +1,6 @@
 using System;
 using Game.Grids;
+using Game.Units.Actions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -120,7 +121,7 @@ public class UnitControlSystem : MonoBehaviour
     private void SetSelectedUnit(Unit unit)
     {
         selectedUnit = unit;
-        SetSelectedAction(unit.GetMoveAction());
+        SetSelectedAction(unit.GetAction<MoveAction>());
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }
 

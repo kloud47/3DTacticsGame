@@ -88,11 +88,14 @@ namespace Game.Units.Actions
         
         public override EnemyAIActions GetEnemyAIAction(GridPosition gridPosition)
         {
+            int targetCountAtGridPosition = unit.GetAction<ShootAction>().GetTargetCountAtPosition(gridPosition);
+
             return new EnemyAIActions
             {
                 gridPosition = gridPosition,
-                actionValue = 0,
+                actionValue = targetCountAtGridPosition * 10,
             };
+
         }
     }
 }

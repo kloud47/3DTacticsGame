@@ -1,29 +1,30 @@
+using System;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
 namespace Game.Grids
 {
-    public class GridSystem
+    public class GridSystem<TGridObject>
     {
         private int width;
         private int height;
         private float cellSize;
-        private GridObject[,] gridObjArray;
+        private TGridObject[,] gridObjArray;
 
-        public GridSystem(int width, int height, float cellSize)
+        public GridSystem(int width, int height, float cellSize, Func<GridSystem<TGridObject>, GridPosition, TGridObject> createGridObject)
         {
             this.width = width;
             this.height = height;
             this.cellSize = cellSize;
-            gridObjArray = new GridObject[width, height];
+            gridObjArray = new TGridObject[width, height];
 
             for (int x = 0; x < width; x++)
             {
                 for (int z = 0; z < height; z++)
                 {
                     GridPosition gridPosition = new GridPosition(x, z);
-                    gridObjArray[x, z] = new GridObject(this, gridPosition);
+                    gridObjArray[x, z] = createGridObject(this, gridPosition);
                 }
             }
         }
@@ -56,7 +57,7 @@ namespace Game.Grids
             }
         }
 
-        public GridObject GetGridObject(GridPosition gridPosition)
+        public TGridObject GetGridObject(GridPosition gridPosition)
         {
             return gridObjArray[gridPosition.x, gridPosition.z];
         }

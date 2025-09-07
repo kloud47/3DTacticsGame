@@ -40,7 +40,7 @@ namespace Game.Units.Actions
         
         public override int GetActionPointsCost()
         {
-            return 2;
+            return 1;
         }
 
         public override EnemyAIActions GetEnemyAIAction(GridPosition gridPosition)

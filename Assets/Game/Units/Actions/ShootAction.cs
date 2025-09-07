@@ -114,6 +114,12 @@ public class ShootAction : BaseAction
 
     public override List<GridPosition> GetValidActionGridPositionList()
     {
+        GridPosition unitGridPosition = unit.GetGridPosition();
+        return GetValidActionGridPositionList(unitGridPosition);
+    }
+
+    public List<GridPosition> GetValidActionGridPositionList(GridPosition gridPosition)
+    {
         List<GridPosition> validGridPositions = new List<GridPosition>();
         GridPosition unitGridPosition = unit.GetGridPosition();
     
@@ -164,7 +170,7 @@ public class ShootAction : BaseAction
 
     public override int GetActionPointsCost()   
     {
-        return 0;
+        return 2;
     }
 
     public Unit GetTargetUnit()
@@ -179,15 +185,17 @@ public class ShootAction : BaseAction
     
     public override EnemyAIActions GetEnemyAIAction(GridPosition gridPosition)
     {
+        Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
+        
         return new EnemyAIActions
         {
             gridPosition = gridPosition,
-            actionValue = 100,
+            actionValue = 100 + Mathf.RoundToInt((1 - targetUnit.GetHealthNormalized())* 100f),
         };
     }
 
     public int GetTargetCountAtPosition(GridPosition gridPosition)
     {
-        
+        return GetValidActionGridPositionList(gridPosition).Count;
     }
 }
