@@ -32,7 +32,7 @@ namespace Game.Units
                 Die();
             }
         
-            Debug.Log(health);
+            // Debug.Log(health);
         }
         
         private void Die()

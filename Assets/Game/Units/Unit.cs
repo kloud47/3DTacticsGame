@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-   private const int ACTION_POINTS_MAX = 2;
+   private const int ACTION_POINTS_MAX = 20;
    
    public static event EventHandler OnAnyActionPointsChanged;
    public static event EventHandler OnAnyUnitSpawned;
@@ -31,6 +31,8 @@ public class Unit : MonoBehaviour
       LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
       TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
       healthSystem.OnDead += HealthSystem_OnDead;
+      
+      
       
       OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty); // Add the spawned Unit to the list:
    }

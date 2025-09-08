@@ -8,7 +8,10 @@ using UnityEngine.EventSystems;
 
 public class ShootAction : BaseAction
 {
+    public static event EventHandler<OnShootEventArgs> OnAnyShootShoot;
     public event EventHandler<OnShootEventArgs> OnShoot;
+    
+    [SerializeField] private LayerMask obstaclesLayerMask;
 
     public class OnShootEventArgs : EventArgs
     {
@@ -80,11 +83,18 @@ public class ShootAction : BaseAction
                 ActionComplete();
                 break;
         }
-        Debug.Log(state);
+        // Debug.Log(state);
     }
 
     private void Shoot()
     {
+        Debug.Log("Fire");
+        OnAnyShootShoot?.Invoke(this, new OnShootEventArgs
+        {
+            targetUnit = TargetUnit,
+            shootingUnit = unit
+        });// for camera shake and other shared properties:
+        
         OnShoot?.Invoke(this, new OnShootEventArgs
         {
             targetUnit = TargetUnit,
@@ -102,7 +112,7 @@ public class ShootAction : BaseAction
     {
         TargetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
         
-        Debug.Log("Aiming");
+        // Debug.Log("Aiming");
         state = State.Aiming;
         float aimingStateTime = 1f;
         stateTimer = aimingStateTime;
@@ -160,6 +170,21 @@ public class ShootAction : BaseAction
                     // Both are in same team:
                     continue;
                 }
+                
+                Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
+                Vector3 shootDir = (targetUnit.GetWorldPosition() - unitWorldPosition).normalized;
+
+                float unitShoulderHeight = 1.7f;
+                if (Physics.Raycast(
+                        unitWorldPosition + Vector3.up * unitShoulderHeight,
+                        shootDir,
+                        Vector3.Distance(unitWorldPosition, targetUnit.GetWorldPosition()),
+                        obstaclesLayerMask))
+                {
+                    // Blocked by an Obstacle
+                    continue;
+                }
+
                 
                 validGridPositions.Add(testGridPosition);
             }

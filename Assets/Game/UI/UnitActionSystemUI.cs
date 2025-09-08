@@ -78,7 +78,7 @@ public class UnitActionSystemUI : MonoBehaviour
     {
         Unit selectedUnit = UnitControlSystem.Instance.GetSelectedUnit();
         int actionpoints = selectedUnit.GetActionPoints();
-        Debug.Log("Action Points -> " + actionpoints);
+        // Debug.Log("Action Points -> " + actionpoints);
         // for (int i = 0; i < actionpoints; i++)
         // {
         //     Instantiate(actionPointsPrefab, actionPointsContainerTransform);
