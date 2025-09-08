@@ -184,7 +184,6 @@ public class ShootAction : BaseAction
                     // Blocked by an Obstacle
                     continue;
                 }
-
                 
                 validGridPositions.Add(testGridPosition);
             }

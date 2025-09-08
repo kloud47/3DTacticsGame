@@ -99,12 +99,12 @@ namespace Game.Units.Actions
                           continue;
                     }
                     
-                    int pathfindingDistanceMultiplier = 10;
-                    if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > maxMoveDistance * pathfindingDistanceMultiplier)
-                    {
-                        // Path length is too long
-                        continue;
-                    }
+                    // int pathfindingDistanceMultiplier = 10;
+                    // if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > maxMoveDistance * pathfindingDistanceMultiplier)
+                    // {
+                    //     // Path length is too long
+                    //     continue;
+                    // }
 
                     
                     validGridPositions.Add(testGridPosition);
