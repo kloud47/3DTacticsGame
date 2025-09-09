@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class DestructubleHealth : MonoBehaviour
 {
-    public event EventHandler OnDead;
-    public event EventHandler HealthChanged;
+    // public event EventHandler OnDead;
+    // public event EventHandler HealthChanged;
     
     [SerializeField] private int health = 50;
     private int healthMax;

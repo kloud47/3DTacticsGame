@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Game.Door;
 using Game.Grids;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -84,5 +85,17 @@ public class LevelGrid : MonoBehaviour
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
         return gridObject.GetUnit();
+    }
+
+    public Door GetDoorAtGirdPosition(GridPosition gridPosition)
+    {
+        GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+        return gridObject.GetDoor();
+    }
+    
+    public void SetDoorAtGirdPosition(GridPosition gridPosition, Door door)
+    {
+        GridObject gridObject = gridSystem.GetGridObject(gridPosition);
+        gridObject.SetDoor(door);
     }
 }

@@ -134,10 +134,40 @@ public class GridVisual : MonoBehaviour
                 gridVisualType = GridVisualType.Red;
                 ShowGridPositionRange(selectedUnit.GetGridPosition(), shootAction.GetMaxShootDistance(), GridVisualType.RedSoft);
                 break;
+            case GranadeAction granadeAction:
+                gridVisualType = GridVisualType.Yellow;
+                break;
+            case SwordAction swordAction:
+                gridVisualType = GridVisualType.Red;
+                ShowGridPositionRangeSquare(selectedUnit.GetGridPosition(), swordAction.GetMaxSwordDistance(), GridVisualType.RedSoft);
+                break;
+            case InteractAction interactAction:
+                gridVisualType = GridVisualType.Blue;
+                break;
         }
 
         ShowGridPositionList(
             selectedAction.GetValidActionGridPositionList(), gridVisualType);
+    }
+    
+    public void ShowGridPositionRangeSquare(GridPosition gridPosition, int range, GridVisualType gridVisualType)
+    {
+        List<GridPosition> gridPositionsList = new List<GridPosition>();
+        for (int x = -range; x <= range; x++)
+        {
+            for (int z = -range; z <= range; z++)
+            {
+                GridPosition testGridPosition = gridPosition + new GridPosition(x, z);
+                // without this wrong grid positions will be added which will cause index out of bound error:
+                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                {
+                    continue;
+                }
+                
+                gridPositionsList.Add(testGridPosition);
+            }
+        }
+        ShowGridPositionList(gridPositionsList, gridVisualType) ;
     }
 
     private void LevelGrid_OnAnyUnitMovedGridPosition(object sender, EventArgs e)
