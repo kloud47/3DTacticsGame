@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Door
 {
-    public class Door : MonoBehaviour
+    public class Door : MonoBehaviour, IInteractible
     {
         [SerializeField] private bool isOpen;
         private GridPosition gridPosition;
@@ -21,7 +21,7 @@ namespace Game.Door
         private void Start()
         {
             gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-            LevelGrid.Instance.SetDoorAtGirdPosition(gridPosition,  this);
+            LevelGrid.Instance.SetInteractibleAtGirdPosition(gridPosition,  this);
 
             if (isOpen)
             {

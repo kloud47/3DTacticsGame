@@ -84,7 +84,7 @@ namespace Game
 
             float moveSpeed = 10f;
 
-            Vector3 moveVector = transform.forward * inputMoveDir.z + transform.right * inputMoveDir.x;
+            Vector3 moveVector = transform.forward * inputMoveDir.z + transform.right * inputMoveDir.x + transform.up * inputMoveDir.y;
             transform.position += moveVector * (moveSpeed * Time.deltaTime);
         }
     }

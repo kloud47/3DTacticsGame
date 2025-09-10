@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class IInteractible : MonoBehaviour
+public interface IInteractible
 {
-    
+    void Interact(Action onInteractionComplete);
 }

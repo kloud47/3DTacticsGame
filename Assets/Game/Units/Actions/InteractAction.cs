@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Game.Door;
 using Game.Grids;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InteractAction : BaseAction
@@ -24,8 +25,8 @@ public class InteractAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        Door door = LevelGrid.Instance.GetDoorAtGirdPosition(gridPosition);
-        door.Interact(OnInteractionComplete);
+        IInteractible interactible = LevelGrid.Instance.GetInteractibleAtGirdPosition(gridPosition);
+        interactible.Interact(OnInteractionComplete);
         ActionStart(onActionComplete);
     }
 
@@ -52,8 +53,8 @@ public class InteractAction : BaseAction
                     continue;
                 }
                 
-                Door door = LevelGrid.Instance.GetDoorAtGirdPosition(testGridPosition);
-                if (door == null)
+                IInteractible interactible = LevelGrid.Instance.GetInteractibleAtGirdPosition(testGridPosition);
+                if (interactible == null)
                 {
                     // No door at grid position:
                     continue;
